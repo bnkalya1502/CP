@@ -1,0 +1,32 @@
+vvi adj(200005);
+vi p,d;
+int diam;
+int dfs(int v,int par=-1,int dep=0) {
+    int len=0;
+    p[v]=par;
+    d[v]=dep;
+    iter(adj[v]){
+        if(it==par)continue;
+        int cur=1+dfs(it,v,dep+1);
+        diam=max(diam,cur+len);
+        len=max(len,cur);
+    }
+    return len;
+}
+
+    dfs(0);
+    int x=0;
+    forl(i,n){
+        if(d[i]>d[x]){
+            x=i;
+        }
+    }
+    dfs(x);
+    int y=0;
+    forl(i,n){
+        if(d[i]>d[y]){
+            y=i;
+        }
+    }
+    diam=d[y];
+    

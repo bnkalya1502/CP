@@ -1,0 +1,85 @@
+class union_find{
+    int n;
+    vi par;
+    vi sz;
+ 
+public:
+    //constructor
+    union_find(int nval){
+        n=nval;
+        par.resize(n+1);
+        sz.resize(n+1);
+ 
+        fore(i,n){
+            par[i]=i;
+            sz[i]=1;
+        }
+    }
+ 
+    int root(int x){
+        if(x==par[x]){
+            return x;
+        }
+        return par[x]=root(par[x]);
+    }
+ 
+    bool find(int a,int b){
+        return root(a)==root(b);
+    }
+ 
+    void un(int a,int b){
+        int ra = root(a);
+        int rb = root(b);
+ 
+        if(ra==rb){
+            return;
+        }
+        if(sz[ra] > sz[rb]){
+            swap(ra,rb);
+        }
+        par[ra]=rb;
+        sz[rb]+=sz[ra];
+        
+    }
+ 
+    int set_size(int a){
+        sz[a] = sz[root(a)];
+        return sz[a];
+    }
+ 
+};
+
+vector<pair<int,pll>> adj;
+int32_t main(){
+    #ifndef ONLINE_JUDGE
+        debug_cerr=true;
+        freopen("./input.txt", "r", stdin);
+        freopen("./output.txt", "w", stdout);
+    #endif
+    fastio;
+
+    int n,m;
+    cin>>n>>m;
+
+    forl(i,m){
+        int u,v,w;
+        cin>>u>>v>>w;
+        u--;v--;
+        adj.pb({w,{u,v}});
+    }
+
+    sort(all(adj));
+    union_find mst(n);
+    int ans=0;
+    iter(adj){
+        int u=it.se.fi,v=it.se.se;
+        int w=it.fi;
+        if(!mst.find(u,v)){
+            mst.un(u,v);
+            ans+=w;
+        }
+    }
+
+    cout << ans << endl;
+    
+}

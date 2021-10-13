@@ -1,0 +1,17 @@
+vector<vector<int>> adj(100005);
+vector<int> dis;
+void bfs(int s){
+    dis[s]=0;
+    queue<int> q;
+    q.push(s);
+    while(!q.empty()){
+	    int v=q.front();
+        q.pop();
+        for(int it:adj[v]){
+            if(d[it]==-1){
+            	dis[it]=dis[v]+1;
+            	q.push(it);
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+
+    //knapsack
+    bitset<200005> b;
+    b[0]=1;
+    for(int i:w){
+        b|=(b>>i);
+    }
+
+    //Q.) count no. of triangles
+    //Inputs -> given the edges
+    //Soln.) 
+    //convert edges as bitsets
+    //if two vertex are connected -> ans+=(b[u]&b[v]).count();
+    //ans/=3

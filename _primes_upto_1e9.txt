@@ -1,0 +1,31 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+const int NMAX = (int)1e9+1e8;
+int32_t main() {
+    bitset<NMAX / 2> bits;
+    bits.set();
+	vector<int> v;
+	v.push_back(2);
+	int cnt = 1;
+    for (int i = 3; i / 2 < bits.size(); i = 2 * bits._Find_next(i / 2) + 1) {
+        v.push_back(i);
+        ++cnt;
+        for (auto j = (int64_t) i * i / 2; j < bits.size(); j += i) 
+            bits[j] = 0;
+    }
+    int t;
+    cin >> t;
+    for(int xx = 1;xx <= t;xx++){
+        int n;
+        cin >> n;
+        cout<<"Case #"<<xx<<": ";
+        for(int l=0;l<=cnt-2;l++){
+            if(v[l]*v[l+1]>n){
+                cout<<v[l]*v[l-1]<<'\n';
+                break;
+            }   
+        }
+    }
+	return 0;
+}

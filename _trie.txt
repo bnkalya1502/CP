@@ -1,0 +1,128 @@
+struct Node{
+    char c;
+    Node* child[26];
+    bool isEnd;
+};
+
+Node* newNode(char c){
+    Node *n=new Node;
+    n->c=c;
+    n->isEnd=false;
+    for(int i=0;i<26;i++){
+        n->child[i]=nullptr;
+    }
+}
+
+class Trie{
+    Node* root;
+
+    public:
+    Trie(){
+        root=newNode('0');
+    }
+
+    void insert(string s){
+        Node* cur=root;
+        for(char c:s){
+            if(cur->child[c-'a']==nullptr){
+                cur->child[c-'a']=newNode(c);
+            }
+            cur=cur->child[c-'a'];
+        }
+        cur->isEnd=true;
+    }
+
+    bool find(string s){
+        Node* cur=root;
+        for(char c:s){
+            if(cur->child[c-'a']==nullptr) return false;
+            cur=cur->child[c-'a'];
+        }
+        return cur->isEnd;
+    }
+};
+
+//////////////////////////////////////
+https://www.hackerrank.com/challenges/maximum-xor/problem
+
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node{
+    bool bit;
+    Node* child[2];
+};
+
+Node* newNode(bool bit){
+    Node* n=new Node;
+    n->bit=bit;
+    n->child[1]=n->child[0]=nullptr;
+    return n;
+}
+
+class Trie{
+    Node* root;
+    public:
+    Trie(){
+        root=newNode(0);
+    }
+
+    vector<bool> convert(int n){
+        vector<bool> bit(32,0);
+        int j=0;
+        while(n){
+            bit[j]=(n&1);
+            n>>=1;
+            ++j;
+        }
+        reverse(bit.begin(),bit.end());
+        return bit;
+    }
+
+    void insert(int n){
+        vector<bool> bit=convert(n);
+        Node* cur=root;
+        for(int i=1;i<32;i++){
+            if(cur->child[bit[i]]==nullptr){
+                cur->child[bit[i]]=newNode(bit[i]);
+            }
+            cur=cur->child[bit[i]];
+        }
+        return;
+    }
+
+    int maximumXor(int q){
+        vector<bool> bit=convert(q);
+        Node* cur=root;
+        int t=(1<<30),val=0;
+        for(int i=1;i<32;i++){
+            if(cur->child[true^bit[i]]==nullptr){
+                cur=cur->child[bit[i]];
+                val+=(t*bit[i]);
+            }
+            else{
+                cur=cur->child[true^bit[i]];
+                val+=(t*(true^bit[i]));
+            }
+            t/=2;
+        }
+        return (q^val);
+    }
+};
+int main(){
+    int n;
+    cin>>n;
+    Trie T;
+    for(int i=0;i<n;i++){
+        int x;
+        cin>>x;
+        T.insert(x);
+    }
+    int m;
+    cin>>m;
+    while(m--){
+        int q;
+        cin>>q;
+        cout<<T.maximumXor(q)<<'\n';
+    }
+}

@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+struct plan{
+    int l,r,c,p;
+};
+bool operator<(const plan &a,const plan &b){
+    return a.p<b.p;
+} 
+istream &operator>>(istream &is,plan &a){
+    is>>a.l>>a.r>>a.c>>a.p;
+    return is;
+}
+ostream &operator<<(ostream &is,plan &a){
+    is<<a.l<<' '<<a.r<<' '<<a.c<<' '<<a.p<<'\n';
+    return is;
+}
+int32_t main(){
+    #ifndef ONLINE_JUDGE
+        debug_cerr=true;
+        freopen("./input.txt", "r", stdin);
+        freopen("./output.txt", "w", stdout);
+        freopen("./debug.txt", "w", stderr);
+    #endif
+    fastio;
+    int n,k,m;
+    cin>>n>>k>>m;
+    vector<plan> v(m);
+    for(plan &x:v){
+        cin>>x;
+    }
+    sort(all(v));
+    for(plan &x:v){
+        cout<<x;
+    }
+}

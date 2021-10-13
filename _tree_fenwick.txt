@@ -1,0 +1,47 @@
+//how to use:
+//update will take index ( with indexing from 1 )
+//query is simply prefix sum of starting index number of elements
+
+const int N=200005;
+int t[N],n,q;
+int query(int x){
+    int s=0;
+    while(x>0){
+        s+=t[x]; 
+        x-=(x&(-x));
+        //parent
+    }
+    return s; 
+} 
+
+void update(int x,int val){
+    while(x<=n){ 
+        t[x]+=val; 
+        x+=(x&(-x));
+    } 
+}
+
+/*
+//Number of inversions to sort an array
+//O(maxElement*log(maxElement))
+int ans=0;
+int n=maxElement of array
+fore(i,n){
+    BITree[i]=0; 
+}
+forn(i,n){  
+    ans+=getSum(p[i]-1);  
+    updateBIT(p[i],1); 
+}
+cout<<ans;
+ 
+int *constructBITree(int arr[],int n){
+    int *BITree=new int[n+1]; 
+    fore(i,n)
+        BITree[i]=0; 
+    forl(i,n){
+        updateBIT(BITree,n,i,arr[i]); 
+    }
+    return BITree; 
+}
+*/

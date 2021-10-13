@@ -1,0 +1,17 @@
+bool debug_cerr=false;
+#define Cerr if(!debug_cerr) {} else cerr
+#define deb(x) Cerr<<#x<<"="<<x<<"\n";
+#define dar(a,n) Cerr<<#a<<"="<<"{";forl(i,n) Cerr<<a[i]<<",}"[i == n-1];Cerr<<"\n";
+#define dvi(v) Cerr<<#v<<"="<<"{";forl(i,v.S) Cerr<<v[i]<<",}"[i==v.S-1];Cerr<<"\n";
+
+int main() {
+    #ifndef ONLINE_JUDGE
+        debug_cerr=true;
+        freopen("./input.txt", "r", stdin);
+        freopen("./output.txt", "w", stdout);
+        freopen("./debug.txt", "w", stderr);
+    #endif
+
+    int ar[5] = {1, 2, 3, 4, 5};
+    dar(ar, 5); // will print this is debug.txt file
+}

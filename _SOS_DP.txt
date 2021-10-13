@@ -1,0 +1,79 @@
+    //https://unacademy.com/class/sum-over-subsets-dp-sos-dp/5QHT2VC0
+    
+    int n;
+    cin>>n;
+    int f[(1<<n)];
+    forl(i,(1<<n)){
+        cin>>f[i];
+    }
+
+    //**********************************
+
+    //O(4^n)
+    int h[(1<<n)]={};
+    forl(i,(1<<n)){
+        forl(j,(1<<n)){
+            if((i&j)==j){
+                h[i]+=f[j];
+            }
+        }
+    }
+
+    //**********************************
+
+    //O(3^n)
+    int h[(1<<n)]={};
+    forl(i,(1<<n)){
+        int j=0;
+        do{
+            h[i]+=f[j];
+        }while(j=((j-i)&j));
+    }
+
+    //O(3^n)
+    int h[(1<<n)]={};
+    forl(i,(1<<n)){
+        for(int j=i;j>0;j=((j-1)&i)){
+            h[i]+=f[j];
+        }
+        h[i]+=f[0];
+    }
+
+    //**********************************
+
+    //O(n*2^n)
+    int h[(1<<n)]={};
+    int sos[(1<<n)][n+1]; 
+    forl(i,(1<<n)){
+        sos[i][0]=f[i];
+    }
+    int t=1;
+    fore(j,n){
+        forl(i,(1<<n)){
+            sos[i][j]=sos[i][j-1]+((i&t)==t)*sos[i^t][j-1];
+        }
+        t*=2;
+    }
+    forl(i,(1<<n)){
+        h[i]=sos[i][n];
+    }
+
+    //**********************************
+                                                           
+    //O(n*2^n)                         
+    int h[(1<<n)]={};                  
+    forl(i,(1<<n)){                    
+        h[i]=f[i];                     
+    }                                  
+    int t=1;                               
+    fore(j,n){                         
+        forn(i,(1<<n)){                
+            h[i]+=((i&t)==t)*h[i^t];   
+        }                              
+        t*=2;                          
+    }                                  
+    forl(i,(1<<n)){                    
+        cout<<h[i]<<' ';               
+    }                                  
+                                       
+    //**********************************

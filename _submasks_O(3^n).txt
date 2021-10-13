@@ -1,0 +1,42 @@
+// given a mask 'm', iterate over all the submasks of 'm', 
+int s = m;
+while (s > 0) {
+    // here s = submask
+    s = (s - 1) & m;
+}
+
+for (int s=m; s; s=(s-1)&m) {
+    // here s = submask
+}
+
+// In both the above iterations, zero is not processed, so process it outside
+//                                 OR
+//                           Do the following:
+
+for (int s=m; ; s=(s-1)&m) {
+    // here s = submask
+    if(s == 0) {
+        break;
+    }
+}
+
+// All the above iterations are O(x), where x = #submasks = pow(2, #setbits)
+
+/////////////////////////////////
+// If we want to do similar to SOS-DP, then we have to 
+// iterate over submask of all numbers from 0 to (1 << n) - 1
+
+for (int m=0; m<(1<<n); ++m) {
+    for (int s=m; s; s=(s-1)&m) {
+
+    }
+    // also for s = 0
+}
+
+// Overall time complexity for this = O(3^n)
+// Proof of Time complexity:
+// #bits = 'n' 
+// for a number = x, inner loop runs R = (pow(2, #setbits(x))) number of times
+// Total = 1 * R1 + 2 * R2 + 4 * R4 ...., where Ri = number of times (pow(2, #set) = i)
+// Total = 1 * nC0 + 2 * nC1 + 4 * nC2 ....
+// Expansion of (1 + x)^n, for x = 2 => 3^n

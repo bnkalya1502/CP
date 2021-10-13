@@ -1,0 +1,9 @@
+vi tour;
+void dfs_tour(int v,int p=-1){
+    tour.pb(v);
+    iter(adj[v]){
+        if(it==p) continue;
+        dfs_tour(it,v);
+        tour.pb(v);
+    }
+}

@@ -1,0 +1,28 @@
+vector<si> adj(200005);
+vi vis,cur;
+stack<int> ss;
+bool cycle;
+void topsort(int v){
+    cur[v]=1;
+    vis[v]=1;
+    iter(adj[v]){
+        if(cur[it]){
+            cycle=true;
+            return;
+        }
+        if(vis[it]) continue;
+        topsort(it);
+    }
+    cur[v]=0;
+    ss.push(v);
+}
+/*
+if(cycle) cout << -1 ;
+else{
+    vi ans;
+    while(!ss.empty()){
+        ans.pb(ss.top());
+        ss.pop();
+    }
+}
+*/

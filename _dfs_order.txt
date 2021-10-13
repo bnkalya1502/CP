@@ -1,0 +1,12 @@
+int clk=0;
+vector<int> lft,rgt,ar;
+vector<vector<int>> adj(200005);
+void dfs_order(int v,int p=-1){
+    clk++;
+    lft[v]=clk;
+    for(int it:adj[v]){
+        if(it==p) continue;
+        dfs_order(it,v);
+    }
+    rgt[v]=clk;
+}

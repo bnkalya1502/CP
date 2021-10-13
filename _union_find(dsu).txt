@@ -1,0 +1,57 @@
+class union_find{
+    int n;
+    vi par;
+    vi sz;
+ 
+public:
+    union_find(int nval){
+        n=nval;
+        par=sz=vi(n+5,-1);
+        forl(i,n+5){
+            par[i]=i;
+            sz[i]=1;
+        }
+    }
+    int root(int x){
+        if(x==par[x]){
+            return x;
+        }
+        return par[x]=root(par[x]);
+    } 
+    bool find(int a,int b){
+        return (root(a)==root(b));
+    } 
+    void un(int a,int b){
+        int ra=root(a);
+        int rb=root(b);
+        if(ra==rb){
+            return;
+        }
+        if(find(a,b)) return;
+        if(sz[ra]>sz[rb]){
+            swap(ra,rb);
+        }
+        par[ra]=rb;
+        sz[rb]+=sz[ra];  
+    } 
+    int set_size(int a){
+        sz[a] = sz[root(a)];
+        return sz[a];
+    }
+};
+
+/*
+How to use: 
+All these are zero based indexes . 
+
+Union will add two disjoint sets .
+
+Find will tell if two nodes are in same set .
+
+Path compression has been done in root(x) function
+This path compression will make sure that we do not
+travel the same path again .
+
+In the union function , we attach the smaller set in 
+the bigger one . 
+*/

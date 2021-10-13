@@ -1,0 +1,40 @@
+vector<int> prefix_function(string s) {
+    int n=(int)s.length();
+    vector<int> lps(n,0);
+    for(int i=1;i<n;i++){
+        int j=lps[i-1];
+        while(j>0&&s[i]!=s[j])
+            j=lps[j-1];
+        if(s[i]==s[j])
+            j++;
+        lps[i]=j;
+    }
+    return lps;
+}  
+
+//Given a text t and a string s,
+//we want to find and display the positions of 
+//all occurrences of the string s in the text t.
+
+//string ss=s+'#'+t;
+
+int32_t main(){
+    #ifndef ONLINE_JUDGE
+        debug_cerr=true;
+        freopen("input.txt", "r", stdin);
+        freopen("output.txt", "w", stdout);
+    #endif
+    fastio;
+    string s,t;
+    cin>>s>>t;
+    int n=s.LEN,m=t.LEN;
+    string ss=s+'#'+t;
+    vi lps=prefix_function(ss);
+    vi ans;
+    forls(i,n+1,n+m+1){
+        if(lps[i]==n){
+            ans.pb(i-2*n);
+        }
+    }
+    iter(ans) cout<<it<<' '; 
+}

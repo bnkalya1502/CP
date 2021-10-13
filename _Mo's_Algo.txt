@@ -1,0 +1,207 @@
+//sum of f*f*x , where f = freq[x] over all x pesent in range [l,r]
+//using Mo's Algorithm
+
+#include <bits/stdc++.h>
+using namespace std;
+
+#define S size()
+#define EN end()
+#define BE begin()
+#define LEN length()
+
+#define endl "\n"
+#define cnt count
+#define in insert
+#define er erase
+#define fi first
+#define se second
+#define ld double
+#define int long long
+
+#define gcd __gcd
+#define mp make_pair
+#define pb push_back
+#define lb lower_bound
+#define ub upper_bound
+#define bs binary_search
+#define np next_permutation
+
+#define si set<int>
+#define sc set<char>
+#define mll map<int,int>
+#define vi vector<int>
+#define vc vector<char>
+#define pll pair<int,int>
+#define vpi vector<pll>
+#define msi multiset<int>
+#define msc multiset<char>
+#define vvi vector<vector<int>>
+
+#define mod1 1000000007
+#define mod2 998244353
+#define inf (int)1e18
+#define eness(x) __builtin_ctzll(x)
+#define nhigh(x) __builtin_popcountll(x)
+#define PI 3.1415926535897932384626433832
+
+#define iter(s) for(auto it:s)
+#define forl(i,n) for(int i=0;i<n;i++)
+#define fore(i,n) for(int i=1;i<=n;i++)
+#define forn(i,n) for(int i=n-1;i>=0;i--)
+#define forls(i,l,r) for(int i=l;i<r;i++)
+#define forns(i,l,r) for(int i=r-1;i>=l;i--)
+
+#define all(v) v.BE,v.EN
+#define SORT(ar,n) sort(ar,ar+n)
+#define rall(v) v.rbegin(),v.rend()
+#define RSORT(ar,n) sort(ar,ar+n,greater<int>())
+
+#define pat int n;cin>>n;
+#define wq int q;cin>>q;fore(_,q)
+#define nokay cout<<(ok?"Yes\n":"No\n");
+#define tak(s) string s;cin>>s;int n=s.LEN;
+#define pat1 int n;cin>>n;int ar[n];forl(i,n) cin>>ar[i];
+#define pat2 int n,k;cin>>n>>k;int ar[n];forl(i,n) cin>>ar[i];
+#define fastio ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+ 
+bool debug_cerr=false;
+#define Cerr if(!debug_cerr) {} else cerr
+#define cerr_line Cerr<<"\n";
+#define deb(x) Cerr<<#x<<"="<<x<<"\n";
+#define dar(a,n) Cerr<<#a<<"="<<"{";forl(i,n) Cerr<<a[i]<<",}"[i == n-1];Cerr<<"\n";
+#define dvi(v) Cerr<<#v<<"="<<"{";forl(i,v.S) Cerr<<v[i]<<",}"[i==v.S-1];Cerr<<"\n";
+/*
+inline int eness(x){int s=0;while(!(x&1)){x/=2;s++;} return s;}
+inline int nhigh(x){int s=0;while(x){s+=(x&1);x/=2;} return s;}
+*/
+//**********************************
+vi mf,mi;
+int POW(int x,int y);
+int MI(int x,int mod);
+void pre_f(int x,int mod);
+void pre_i(int x,int mod);
+int C(int x,int y,int mod);
+int bpow(int x,int y,int mod);
+
+int POW(int x,int y){
+    return bpow(x,y,inf);
+}
+int MI(int x,int mod=mod1){
+    return bpow(x,mod-2,mod);
+}
+void pre_f(int x,int mod=mod1){
+    mf=vi(x+1,1);
+    forls(i,2,x+1){
+        mf[i]=mf[i-1]*i;
+        mf[i]%=mod;
+    }
+    return;
+}
+void pre_i(int x,int mod=mod1){
+    mi=vi(x+1);
+    forl(i,x+1){
+        mi[i]=MI(mf[i],mod);
+    }
+    return;
+}
+int C(int x,int y,int mod=mod1){
+    if(x<y) return 0;
+    int n1=mf[x];
+    int n2=mi[y];
+    int n3=mi[x-y];
+    int res=(n1*n2)%mod;
+    res=(res*n3)%mod;
+    return res;
+}
+int bpow(int x,int y,int mod=mod1){
+    x%=mod;
+    int res=1;
+    while(y>0){
+        if(y&1){
+            res=res*x%mod;
+        }
+        x=x*x%mod;
+        y>>=1;
+    }
+    return res;
+}
+//**********************************
+struct DS{
+    int l,r;
+    int ans;
+    int Ks[1000001]={};
+};
+int32_t main(){
+    #ifndef ONLINE_JUDGE
+        debug_cerr=true;
+        freopen("./input.txt", "r", stdin);
+        freopen("./output.txt", "w", stdout);
+    #endif
+    fastio;
+    int n,q;
+    cin>>n>>q;
+    int ar[n];
+    forl(i,n){
+        cin>>ar[i];
+    }
+    int sqq=sqrt(q);
+    int B=max(n/sqq,1LL);//block size
+    int nB=(n+B-1)/B;//number of blocks
+    array<int,2> query[q];
+    array<int,3> sorted[q];
+    forl(i,q){
+        forl(j,2){
+            int x;
+            cin>>x;
+            query[i][j]=x-1;
+            sorted[i][j]=x-1;
+        }
+        sorted[i][2]=i;
+        sorted[i][0]/=nB;
+    }
+    sort(sorted,sorted+q);
+    int ans[q];
+    DS range;
+    range.l=0,range.r=0;
+    range.ans=ar[0];
+    range.Ks[ar[0]]=1;
+    iter(sorted){
+        int i=it[2];
+        if(range.l>query[i][0]){
+            while(range.l!=query[i][0]){
+                range.l--;
+                int ff=range.Ks[ar[range.l]];
+                range.ans+=(2*ff+1)*ar[range.l];
+                range.Ks[ar[range.l]]++;
+            }
+        }
+        else if(range.l<query[i][0]){
+            while(range.l!=query[i][0]){
+                range.Ks[ar[range.l]]--;
+                int ff=range.Ks[ar[range.l]];
+                range.ans-=(2*ff+1)*ar[range.l];
+                range.l++;
+            }
+        }
+        if(range.r>query[i][1]){
+            while(range.r!=query[i][1]){
+                range.Ks[ar[range.r]]--;
+                int ff=range.Ks[ar[range.r]];
+                range.ans-=(2*ff+1)*ar[range.r];
+                range.r--;
+            }
+        }
+        else if(range.r<query[i][1]){
+            while(range.r!=query[i][1]){
+                range.r++;
+                int ff=range.Ks[ar[range.r]];
+                range.ans+=(2*ff+1)*ar[range.r];
+                range.Ks[ar[range.r]]++;
+            }
+        }
+        ans[i]=range.ans;
+    }
+    iter(ans){
+        cout<<it<<'\n';
+    }
+}

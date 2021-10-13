@@ -1,0 +1,27 @@
+    int n;
+    cin>>n;
+    int ar[n];
+    forl(i,n){
+        cin>>ar[i];
+    }
+    stack<int> s;
+    s.push(1);
+    int l[n]={0};
+    fore(i,n-1){
+        if(ar[i]>ar[i-1]){
+            l[i]=i;
+        }
+        else{
+            while(1){
+                if(s.empty()) break;
+                if(ar[s.top()-1]<ar[i]) break;
+                s.pop();
+            }
+            if(s.empty())l[i]=0;
+            else l[i]=s.top();
+        }
+        s.push(i+1);
+    }
+    forl(i,n){
+        l[i]--;
+    }

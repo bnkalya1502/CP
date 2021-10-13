@@ -1,0 +1,24 @@
+int PHI(int n){ 
+    int res=n;
+    for(int p=2;p*p<=n;p++){
+        if(n%p==0){
+            while(n%p==0){
+                n/=p;
+            }
+            res-=res/p; 
+        } 
+    }
+    if(n>1){
+        res-=res/n;
+    }
+    return res; 
+} 
+/*
+(a power (b power (c power d))) % e 
+int a,b,c,d,e;
+cin>>a>>b>>c>>d;
+int x=PHI(e);
+int y=PHI(x);
+int z=PHI(y);
+cout<<bpow(a,x+bpow(b,y+bpow(c,z+d%z,y),x),e);
+*/

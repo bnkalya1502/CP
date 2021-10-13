@@ -1,0 +1,39 @@
+int adj[1005][1005];
+int dis[1005][1005];
+
+int32_t main(){
+    #ifndef ONLINE_JUDGE
+        debug_cerr=true;
+        freopen("./input.txt", "r", stdin);
+        freopen("./output.txt", "w", stdout);
+    #endif
+    fastio;
+    int n,m;
+    cin>>n>>m;
+    for(int i=0;i<m;i++){
+        int u,v,w;
+        cin>>u>>v>>w;
+        adj[u][v]=w;
+        adj[v][u]=w;
+    }
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=n;j++){
+            if(i==j) dis[i][j]=0;
+            else if(adj[i][j]) dis[i][j]=adj[i][j];
+            else dis[i][j]=inf;
+        }
+    }
+    for(int k=1;k<=n;k++){
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=n;j++){
+                dis[i][j]=min(dis[i][j],dis[i][k]+dis[k][j]);
+            }
+        }
+    }
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=n;j++){
+            cout<<dis[i][j]<<' ';
+        }
+        cout<<endl;
+    }
+}

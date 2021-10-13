@@ -1,0 +1,33 @@
+vector<vector<int>> adj(100005);
+vector<int> col,vis,p;
+bool yes;
+void bfs(int v){
+    int ok=1;
+    queue<int> q;
+    q.push(v);
+    col[v]=1;
+    vis[v]=1;
+    while(!q.empty()){
+        int x=q.front();
+        q.pop();
+        for(int it:adj[x]){
+            if(it==p[x]) continue;
+            if(col[it]==col[x]){
+                ok=0;
+                break;
+            }
+            else if(col[it]==-1){
+                col[it]=1^col[x];
+                p[it]=x;
+                q.push(it);
+                vis[it]=1;
+            }
+        }
+        if(!ok){
+            break;
+        }
+    }
+    if(!ok){
+        yes=false;
+    }
+}

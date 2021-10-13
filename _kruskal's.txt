@@ -1,0 +1,82 @@
+class union_find{
+    int n;
+    vi par;
+    vi sz;
+ 
+public:
+    //constructor
+    union_find(int nval){
+        n=nval;
+        par.resize(n+1);
+        sz.resize(n+1);
+ 
+        fore(i,n){
+            par[i]=i;
+            sz[i]=1;
+        }
+    }
+ 
+    int root(int x){
+        if(x==par[x]){
+            return x;
+        }
+        return par[x]=root(par[x]);
+    }
+ 
+    bool find(int a,int b){
+        return root(a)==root(b);
+    }
+ 
+    void un(int a,int b){
+        int ra = root(a);
+        int rb = root(b);
+ 
+        if(ra==rb){
+            return;
+        }
+ 
+        //(logn/n) factor
+        if(sz[rb] > sz[ra]){
+            swap(ra,rb);
+        }
+        par[ra]=rb;
+        sz[rb]+=sz[ra];
+        
+    }
+ 
+    int set_size(int a){
+        sz[a] = sz[root(a)];
+        return sz[a];
+    }
+ 
+};
+
+int main(){
+    int n,m;
+    cin>>n>>m;
+    //n = #vertices 
+    //m = #edges
+    vector<array<int,3>> edges;
+    for(int i=0;i<m;i++){
+        int u,v,w;
+        cin>>u>>v>>w;
+        adj.push_back({w,u,v});
+    }
+
+    sort(all(edges));
+    //for minimum spanning tree
+
+    union_find mst(n);
+    int ans=0;
+    //here auto = array<int,3>
+    for(auto it:edges){
+        int w=it[0],u=it[1],v=it[2];
+        if(!mst.FIND(u,v)){
+            mst.UNION(u,v);
+            ans+=w;
+        }
+    }
+
+    cout << ans << endl;
+    
+}

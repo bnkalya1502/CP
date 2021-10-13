@@ -1,0 +1,17 @@
+int lis(vector<int> &a){
+    int n=a.size();
+    vector<int> ans;
+    ans.pb(a[0]);
+    for(int i=1;i<=n-1;i++){
+        int as=ans.size();
+        if(a[i]>ans[as-1]){
+            ans.pb(a[i]);
+        }
+        else{
+            int u=upper_bound(ans.begin(),ans.end(),a[i])-ans.begin();
+            ans[u]=a[i];
+        }
+    }
+    int as=ans.size();
+    return as;
+}

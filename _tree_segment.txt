@@ -1,0 +1,49 @@
+int func(int a,int b){
+    return min(a,b);
+}
+const int base=inf;
+const int maxn=200005;
+int ar[maxn],t[4*maxn];
+void buildTree(int v,int tl,int tr){
+    int tm=(tl+tr)/2;
+    if(tl==tr){
+        t[v]=ar[tl];
+        return;
+    }
+    buildTree(2*v,tl,tm);
+    buildTree(2*v+1,tm+1,tr);
+    t[v]=func(t[2*v],t[2*v+1]);
+    return;
+}
+
+int query(int v,int tl,int tr,int l,int r){
+    int tm=(tl+tr)/2;
+    if(l>tr||r<tl){
+        return base;
+    }
+    else if(l<=tl&&r>=tr){
+        return t[v];
+    }
+    else{
+        return func(query(2*v,tl,tm,l,r),query(2*v+1,tm+1,tr,l,r));
+    }
+}
+
+void update(int v,int tl,int tr,int x,int val){
+    int tm=(tl+tr)/2;
+    if(tl==tr){
+        t[v]=val;
+        int i=v/2;
+        while(i!=0){
+            t[i]=func(t[2*i],t[2*i+1]);
+            i/=2;
+        }
+        return;
+    }
+    if(x>tm){
+        update(2*v+1,tm+1,tr,x,val);
+    }
+    else{
+        update(2*v,tl,tm,x,val);
+    }
+}

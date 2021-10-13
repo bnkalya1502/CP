@@ -1,0 +1,18 @@
+vector<int> dis(n,inf);
+dis[0]=0;
+deque<int> q;
+q.push_front(0);
+while(!q.empty()){
+    int v=q.front();
+    q.pop_front();
+    iter(adj[v]){
+        int u=it.first,w=it.second;
+        if(dis[v]+w<dis[u]){
+            dis[u]=dis[v]+w;
+            if(w==1)
+                q.push_back(u);
+            else
+                q.push_front(u);
+        }
+    }
+}

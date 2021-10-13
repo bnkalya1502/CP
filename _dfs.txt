@@ -1,0 +1,18 @@
+vector<vector<int>> adj(100005);
+vector<int> p,d,tin,tout;
+int T=0;
+void dfs(int v,int par=-1,int dep=0){
+	p[v]=par;
+	d[v]=dep;
+	tin[v]=T++;
+	for(int it:adj[v]){
+		if(it==par)
+			continue;
+		dfs(it,v,dep+1);
+	}
+	tout[v]=T++;
+}
+
+bool isAnc(int v,int u){
+	if(tin[v]<=tin[u]&&tout[u]<=tout[v]);
+}
